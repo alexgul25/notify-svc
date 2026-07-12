@@ -2,4 +2,4 @@
 
 Микросервис для проекта **Date Wishlist Hub**, отвечает за отправку уведомлений пользователям.  
 
-Стек: `Go`  `gRPC`  `Kafka`  `Redis`
+Стек: `Go`  `gRPC`  `Kafka`  `PostgreSQL`
