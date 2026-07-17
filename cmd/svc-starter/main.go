@@ -1,25 +1,38 @@
 package main
 
+import (
+	"context"
+	"log/slog"
+	"os"
+	"os/signal"
+	"syscall"
+
+	"github.com/alexgul25/notify-svc/internal/app"
+	"github.com/alexgul25/notify-svc/internal/config"
+	"github.com/alexgul25/notify-svc/internal/lib/logger"
+)
+
 func main() {
+	appCtx, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM, syscall.SIGINT)
+	defer stop()
 
-	/*
-		- написать  internal/domain/ (пакет events и файл с ошибками)
+	cfg, err := config.LoadNotifyService()
+	if err != nil {
+		slog.Error("failed to load config files", slog.Any("error", err))
+		os.Exit(1)
+	}
 
-		- написать internal/lib с логгером
+	log := logger.New(cfg.Env)
 
-		- написать internal/service/notification/logic.go с абстракциями
+	application, err := app.New(log, cfg)
+	if err != nil {
+		slog.Error("failed to init app", slog.Any("error", err))
+		os.Exit(1)
+	}
 
-		- написать internal/storage/redis для ключей
+	application.Start()
 
-		- написать internal/infrastructure/ (подпапки grpc, kafka, notifier, serializer)
+	<-appCtx.Done()
 
-		- написать internal/consumer где определить Consumer и процессор, использующий собранные ранее компоненты
-
-		- написать internal/config
-
-		- написать internal/app
-
-		- собрать всё в main
-	*/
-
+	application.GracefulShutdown()
 }
