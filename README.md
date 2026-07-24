@@ -31,22 +31,22 @@
 
 ## :gear: Структура сервиса
 
-**[:open_file_folder: cmd](./cmd/)** - команды запуска приложения.
+:open_file_folder: **[cmd](./cmd/)** - команды запуска приложения.
 
-**[:open_file_folder: migrations](./migrations/)** - файлы миграций.
+:open_file_folder: **[migrations](./migrations/)** - файлы миграций.
 
-**[:open_file_folder: internal/app](./internal/app/)** - сборка всех компонентов в единое приложение.
+:open_file_folder: **[internal/app](./internal/app/)** - сборка всех компонентов в единое приложение.
 
-**[:open_file_folder: internal/config](./internal/config/)** - работа с файлами конфигурации.
+:open_file_folder: **[internal/config](./internal/config/)** - работа с файлами конфигурации.
 
-**[:open_file_folder: internal/domain](./internal/domain/)** - определения доменных сущностей.
+:open_file_folder: **[internal/domain](./internal/domain/)** - определения доменных сущностей.
 
-**[:open_file_folder: internal/inbox](./internal/inbox/)** - идемпотентный консьюмер брокера сообщений.
+:open_file_folder: **[internal/inbox](./internal/inbox/)** - идемпотентный консьюмер брокера сообщений.
 
-**[:open_file_folder: internal/infrastructure](./internal/infrastructure/)** - конкретные реализации абстрактных сущностей, используемых для работы приложения.
+:open_file_folder: **[internal/infrastructure](./internal/infrastructure/)** - конкретные реализации абстрактных сущностей, используемых для работы приложения.
 
-**[:open_file_folder: internal/lib](./internal/lib/)** - общие вспомогательные функции и утилиты.
+:open_file_folder: **[internal/lib](./internal/lib/)** - общие вспомогательные функции и утилиты.
 
-**[:open_file_folder: internal/service](./internal/service/)** - сервисный слой (бизнес-логика).
+:open_file_folder: **[internal/service](./internal/service/)** - сервисный слой (бизнес-логика).
 
-**[:open_file_folder: internal/storage](./internal/storage/)** - слой хранения данных.
+:open_file_folder: **[internal/storage](./internal/storage/)** - слой хранения данных.
