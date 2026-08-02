@@ -1,4 +1,4 @@
--- goose Up
+-- +goose Up
 CREATE TABLE IF NOT EXISTS inbox (
     id TEXT PRIMARY KEY,
     topic TEXT NOT NULL,
@@ -7,5 +7,5 @@ CREATE TABLE IF NOT EXISTS inbox (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- goose Down
+-- +goose Down
 DROP TABLE IF EXISTS inbox;
