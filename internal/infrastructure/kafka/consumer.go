@@ -78,10 +78,13 @@ func (c *Consumer) Close() error {
 	default:
 		close(c.done)
 		c.wg.Wait()
-		return fmt.Errorf(
-			"%s: %w",
-			op,
-			errors.Join(c.partitionConsumer.Close(), c.consumer.Close()),
-		)
+
+		err := errors.Join(c.partitionConsumer.Close(), c.consumer.Close())
+
+		if err != nil {
+			return fmt.Errorf("%s: %w", op, err)
+		}
+
+		return nil
 	}
 }
