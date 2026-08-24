@@ -44,7 +44,9 @@ func NewConsumer(brokers []string, topic string) (*Consumer, error) {
 			case <-done:
 				return
 			case msg := <-partitionConsumer.Messages():
+				msgID := getHeaderValue(msg.Headers, "message_id")
 				inboxMsg := inbox.Message{
+					ID:        msgID,
 					Topic:     msg.Topic,
 					Partition: msg.Partition,
 					Offset:    msg.Offset,
@@ -63,6 +65,15 @@ func NewConsumer(brokers []string, topic string) (*Consumer, error) {
 		wg:                wg,
 		done:              done,
 	}, nil
+}
+
+func getHeaderValue(headers []*sarama.RecordHeader, key string) string {
+	for _, h := range headers {
+		if string(h.Key) == key {
+			return string(h.Value)
+		}
+	}
+	return ""
 }
 
 func (c *Consumer) Messages() <-chan inbox.Message {
