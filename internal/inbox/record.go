@@ -1,7 +1,6 @@
 package inbox
 
 import (
-	"strconv"
 	"time"
 )
 
@@ -16,8 +15,4 @@ type Record struct {
 	ProcessStatus string
 	Payload       []byte
 	CreatedAt     time.Time
-}
-
-func ToRecordID(topic string, partition int32, offset int64) string {
-	return topic + "-" + strconv.FormatInt(int64(partition), 10) + "-" + strconv.FormatInt(offset, 10)
 }
