@@ -56,36 +56,46 @@ func (cp *ConsumerProcessor) Start() {
 		case <-cp.done:
 			return
 		case msg := <-cp.consumer.Messages():
-			log.Info(
-				"get msg from consumer",
-				slog.String("topic", msg.Topic),
-				slog.Int64("partition", int64(msg.Partition)),
-				slog.Int64("offset", msg.Offset),
-			)
-
-			record := Record{
-				ID:            ToRecordID(msg.Topic, msg.Partition, msg.Offset),
-				Topic:         msg.Topic,
-				ProcessStatus: StatusPending,
-				Payload:       msg.Value,
-				CreatedAt:     time.Now(),
-			}
-
-			log.Info("attempting to insert record about msg")
-
-			insertCtx, insertCancel := context.WithTimeout(context.Background(), cp.opTimeout)
-			err := cp.repo.InsertRecord(insertCtx, record)
-			if errors.Is(err, domain.ErrMsgDoubleSend) {
-				log.Warn("get duplicate msg")
-			} else if err != nil {
+			if msg.ID == "" {
 				log.Error(
-					"failed to insert record about msg",
-					slog.Any("error", err),
+					"msg without ID",
+					slog.String("topic", msg.Topic),
+					slog.Int64("partition", int64(msg.Partition)),
+					slog.Int64("offset", msg.Offset),
 				)
 			} else {
-				log.Info("record about msg is inserted successfully")
+				log.Info(
+					"get msg from consumer",
+					slog.String("msgID", msg.ID),
+					slog.String("topic", msg.Topic),
+					slog.Int64("partition", int64(msg.Partition)),
+					slog.Int64("offset", msg.Offset),
+				)
+
+				record := Record{
+					ID:            msg.ID,
+					Topic:         msg.Topic,
+					ProcessStatus: StatusPending,
+					Payload:       msg.Value,
+					CreatedAt:     time.Now(),
+				}
+
+				log.Info("attempting to insert record about msg")
+
+				insertCtx, insertCancel := context.WithTimeout(context.Background(), cp.opTimeout)
+				err := cp.repo.InsertRecord(insertCtx, record)
+				if errors.Is(err, domain.ErrMsgDoubleSend) {
+					log.Warn("get duplicate msg")
+				} else if err != nil {
+					log.Error(
+						"failed to insert record about msg",
+						slog.Any("error", err),
+					)
+				} else {
+					log.Info("record about msg is inserted successfully")
+				}
+				insertCancel()
 			}
-			insertCancel()
 		}
 	}
 }
