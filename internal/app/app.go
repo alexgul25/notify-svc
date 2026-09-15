@@ -38,6 +38,11 @@ func New(log *slog.Logger, cfg *config.Config) (*App, error) {
 		return nil, fmt.Errorf("failed to init storage: %w", err)
 	}
 
+	if err := storage.Ping(); err != nil {
+		storage.Close()
+		return nil, fmt.Errorf("failed to ping storage: %w", err)
+	}
+
 	inboxStorage := postgresql.NewInboxStorage(storage.DB())
 
 	consumer, err := kafka.NewConsumer(cfg.KafkaConsumer.Brokers, inbox.TopicPlaceCreated)
