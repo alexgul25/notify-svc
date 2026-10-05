@@ -28,12 +28,7 @@ type App struct {
 }
 
 func New(log *slog.Logger, cfg *config.Config) (*App, error) {
-	storage, err := postgresql.NewStorage(
-		cfg.Database.User,
-		cfg.Database.Password,
-		cfg.Database.Host,
-		cfg.Database.DbName,
-		cfg.Database.Port)
+	storage, err := postgresql.NewStorage(cfg.Database.DSN())
 	if err != nil {
 		return nil, fmt.Errorf("failed to init storage: %w", err)
 	}
