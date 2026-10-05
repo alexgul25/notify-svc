@@ -11,7 +11,7 @@ import (
 
 type Config struct {
 	Env            string `envconfig:"ENV"`
-	ServiceName    string `envconfig:"SERVICE_NAME" env-default:"notify-svc"`
+	ServiceName    string `envconfig:"SERVICE_NAME" default:"notify-svc"`
 	Database       DatabaseConfig
 	InboxProcessor InboxProcessorConfig
 	KafkaConsumer  KafkaConsumerConfig
@@ -28,7 +28,7 @@ type DatabaseConfig struct {
 }
 
 type InboxProcessorConfig struct {
-	OpTimeout time.Duration `envconfig:"INBOX_PROCESSOR_OP_TIMEOUT" env-default:"5s"`
+	OpTimeout time.Duration `envconfig:"INBOX_PROCESSOR_OP_TIMEOUT" default:"5s"`
 }
 
 type KafkaConsumerConfig struct {
@@ -38,14 +38,14 @@ type KafkaConsumerConfig struct {
 
 type GRPCClientConfig struct {
 	UserServiceAddr         string        `envconfig:"USER_SERVICE_ADDR"`
-	UserServiceTimeout      time.Duration `envconfig:"USER_SERVICE_TIMEOUT" env-default:"5s"`
-	UserServiceRetriesCount int           `envconfig:"USER_SERVICE_RETRY_COUNT" env-default:"3"`
+	UserServiceTimeout      time.Duration `envconfig:"USER_SERVICE_TIMEOUT" default:"5s"`
+	UserServiceRetriesCount int           `envconfig:"USER_SERVICE_RETRY_COUNT" default:"3"`
 }
 
 type EventPollerConfig struct {
-	Limit          int           `envconfig:"EVENT_POLLER_LIMIT" env-default:"50"`
-	NotifyInterval time.Duration `envconfig:"EVENT_POLLER_NOTIFY_INTERVAL" env-default:"10s"`
-	Timeout        time.Duration `envconfig:"EVENT_POLLER_TIMEOUT" env-default:"5s"`
+	Limit          int           `envconfig:"EVENT_POLLER_LIMIT" default:"50"`
+	NotifyInterval time.Duration `envconfig:"EVENT_POLLER_NOTIFY_INTERVAL" default:"10s"`
+	Timeout        time.Duration `envconfig:"EVENT_POLLER_TIMEOUT" default:"5s"`
 }
 
 func load() (*Config, error) {
